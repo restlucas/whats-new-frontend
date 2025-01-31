@@ -10,20 +10,10 @@ import {
   UserGear,
 } from "@phosphor-icons/react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import ThemeToggle from "./themeToggle";
-import useAuthCheck from "../hooks/useAuthCheck";
 import { useContext, useEffect, useRef, useState } from "react";
-import { UserContext } from "@src/contexts/UserContext";
 import { categories } from "@src/constants";
-
-interface UserProps {
-  id: string;
-  username: string;
-  name: string;
-  role: "READER" | "CREATOR" | "ADMIN";
-  email: string;
-  createdAt: string;
-}
+import ThemeToggle from "./themeToggle";
+import { AuthContext, UserProps } from "@src/contexts/AuthContext";
 
 interface LoggedOptionsProps {
   user: UserProps;
@@ -73,7 +63,7 @@ const LoggedOptions = ({ user, setShowMobileMenu }: LoggedOptionsProps) => {
   const divRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [loggedOptions, setLoggedOptions] = useState<boolean>(false);
-  const { signOut } = useContext(UserContext);
+  const { signOut } = useContext(AuthContext);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (divRef.current && !divRef.current.contains(event.target as Node)) {
@@ -249,13 +239,8 @@ const EntranceOptions = () => {
   );
 };
 
-const DesktopNavigation = ({
-  urlParams,
-}: {
-  urlParams: URLSearchParams;
-  authenticated: boolean | null;
-}) => {
-  const { user } = useContext(UserContext);
+const DesktopNavigation = ({ urlParams }: { urlParams: URLSearchParams }) => {
+  const { user, loading } = useContext(AuthContext);
 
   return (
     <div className="hidden min-[900px]:flex items-center justify-between">
@@ -305,36 +290,16 @@ const DesktopNavigation = ({
           <Question size={22} className="fill-text-primary cursor-pointer" />
         </Link>
 
-        {user ? <LoggedOptions user={user} /> : <EntranceOptions />}
-
-        {/* {authenticated ? (
-          <Link
-            to="/panel"
-            className="w-auto text-nowrap py-1 px-2 rounded-md bg-red-vibrant text-white font-bold flex items-center justify-center duration-100 hover:bg-red-hover"
-          >
-            Go to dashboard
-          </Link>
-        ) : (
-          <Link
-            to="/auth"
-            className="w-auto py-1 px-2 rounded-md bg-red-vibrant text-white font-bold flex items-center justify-center duration-100 hover:bg-red-hover"
-          >
-            Go to login
-          </Link>
-        )} */}
+        {/* <EntranceOptions /> */}
+        {user && !loading ? <LoggedOptions user={user} /> : <EntranceOptions />}
       </div>
     </div>
   );
 };
 
-const MobileNavigation = ({
-  urlParams,
-}: {
-  urlParams: URLSearchParams;
-  authenticated: boolean | null;
-}) => {
+const MobileNavigation = ({ urlParams }: { urlParams: URLSearchParams }) => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
   const divRef = useRef<HTMLDivElement>(null);
 
   const [isAnimating, setIsAnimating] = useState(false);
@@ -473,20 +438,13 @@ const MobileNavigation = ({
 };
 
 export function Header() {
-  const { isAuthenticated } = useAuthCheck();
   const [searchParams] = useSearchParams();
 
   return (
     <header className="dark:text-white text-primary py-6 mx-4 xl:mx-36">
-      <DesktopNavigation
-        urlParams={searchParams}
-        authenticated={isAuthenticated}
-      />
+      <DesktopNavigation urlParams={searchParams} />
 
-      <MobileNavigation
-        urlParams={searchParams}
-        authenticated={isAuthenticated}
-      />
+      <MobileNavigation urlParams={searchParams} />
     </header>
   );
 }

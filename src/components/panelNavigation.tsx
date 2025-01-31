@@ -9,9 +9,9 @@ import {
 } from "@phosphor-icons/react";
 import ThemeToggle from "./themeToggle";
 import { useContext, useEffect, useRef, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TeamsButton } from "./button/teams";
+import { AuthContext } from "@src/contexts/AuthContext";
 
 const menus = [
   { name: "Dashboard", href: "/panel", icon: <House size={22} /> },
@@ -31,7 +31,7 @@ export function PanelNavigation() {
   const location = useLocation();
   const navigate = useNavigate();
   const divRef = useRef<HTMLDivElement>(null);
-  const { user, signOut } = useContext(UserContext);
+  const { user, signOut } = useContext(AuthContext);
 
   const [isAnimating, setIsAnimating] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);

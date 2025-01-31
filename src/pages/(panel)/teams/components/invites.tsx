@@ -9,8 +9,8 @@ import {
   revokeInvitation,
   sendInvitation,
 } from "@src/services/teamsServices";
-import { UserContext } from "@src/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "@src/contexts/AuthContext";
 
 interface MemberInvitations {
   id: string;
@@ -36,7 +36,7 @@ interface SelectedTeamProps {
 }
 
 export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [state, setState] = useState({

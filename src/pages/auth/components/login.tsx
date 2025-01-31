@@ -1,9 +1,9 @@
 import { FormEvent, useContext, useState } from "react";
 import { Input } from "@src/components/input";
-import { UserContext } from "@src/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AuthButton } from "@src/components/button/auth";
+import { AuthContext } from "@src/contexts/AuthContext";
 
 interface LoginProps {
   entranceMode: string;
@@ -26,7 +26,7 @@ export function Login({ entranceMode, handleAuth }: LoginProps) {
     username: "",
     password: "",
   });
-  const { signIn } = useContext(UserContext);
+  const { signIn } = useContext(AuthContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

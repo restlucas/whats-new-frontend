@@ -15,31 +15,34 @@ import { MyProfile } from "./pages/my-profile";
 import { ResetPassword } from "./pages/auth/reset-password";
 import { AppProviders } from "./components/appProviders";
 import { Edit } from "./pages/(panel)/news/edit";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <AppProviders>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route path="" element={<Home />} />
-            <Route path="article/:slug" element={<Article />} />
-            <Route path="search" element={<Search />} />
-          </Route>
-
-          <Route path="/panel" element={<PanelLayout />}>
-            <Route path="" element={<Dashboard />} />
-            <Route path="news" element={<News />} />
-            <Route path="news/edit" element={<Edit />} />
-            <Route path="teams" element={<Teams />} />
-          </Route>
-
           <Route path="/support" element={<Support />} />
           <Route path="/auth/reader" element={<AuthReader />} />
           <Route path="/auth/creator" element={<AuthCreator />} />
           <Route path="/auth/reset-password" element={<ResetPassword />} />
           <Route path="/my-profile" element={<MyProfile />} />
           <Route path="/error" element={<Error />} />
+
+          <Route path="/" element={<Layout />}>
+            <Route path="" element={<Home />} />
+            <Route path="article/:slug" element={<Article />} />
+            <Route path="search" element={<Search />} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/panel" element={<PanelLayout />}>
+              <Route path="" element={<Dashboard />} />
+              <Route path="news" element={<News />} />
+              <Route path="news/edit" element={<Edit />} />
+              <Route path="teams" element={<Teams />} />
+            </Route>
+          </Route>
         </Routes>
       </AppProviders>
     </BrowserRouter>

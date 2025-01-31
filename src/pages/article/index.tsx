@@ -5,12 +5,13 @@ import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 import { Comments } from "./components/comments";
-import { User, UserContext } from "@src/contexts/UserContext";
+import { AuthContext, User } from "@src/contexts/AuthContext";
+import { LikeContext } from "@src/contexts/LikeContext";
 
 export function Article() {
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
   const { slug } = useParams();
-  const { likedNews, toggleArticleLike } = useContext(UserContext);
+  const { likedNews, toggleArticleLike } = useContext(LikeContext);
 
   const { article, isLoading, error, refetch, incrementArticleViews } =
     useArticle(slug || "", user ? user.id : "");

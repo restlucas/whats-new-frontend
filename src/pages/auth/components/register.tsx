@@ -1,15 +1,11 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { Input } from "@src/components/input";
-import { UserContext } from "@src/contexts/UserContext";
 import { Helmet } from "react-helmet-async";
 import { AuthButton } from "@src/components/button/auth";
+import { AuthContext } from "@src/contexts/AuthContext";
 
 interface RegisterProps {
   registerMode: "READER" | "CREATOR";
-  params?: {
-    token: string | null;
-    email: string | null;
-  };
   handleAuth: (type: string) => void;
 }
 
@@ -19,9 +15,10 @@ interface FormProps {
   email: string;
   password: string;
   confirmPassword: string;
+  image: string;
 }
 
-export function Register({ registerMode, params, handleAuth }: RegisterProps) {
+export function Register({ registerMode, handleAuth }: RegisterProps) {
   const url = new URL(window.location.href);
   const [message, setMessage] = useState<{
     code: number;
@@ -32,11 +29,12 @@ export function Register({ registerMode, params, handleAuth }: RegisterProps) {
     username: "",
     email: "",
     password: "",
+    image: "",
     confirmPassword: "",
   });
   const [token] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const { signUp } = useContext(UserContext);
+  const { signUp } = useContext(AuthContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,16 +50,10 @@ export function Register({ registerMode, params, handleAuth }: RegisterProps) {
     setMessage(null);
     setLoading(true);
 
-    const data = {
-      ...form,
-      token: token,
-      registerMode,
-    };
-
     if (form.password !== form.confirmPassword) {
       setMessage({ code: 400, title: "Passwords do not match" });
     } else {
-      const response = await signUp(data);
+      const response = await signUp(form, registerMode);
 
       if (response.status !== 201) {
         setMessage({
@@ -83,15 +75,6 @@ export function Register({ registerMode, params, handleAuth }: RegisterProps) {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (params) {
-      setForm((prevState) => ({
-        ...prevState,
-        email: params.email || "",
-      }));
-    }
-  }, []);
 
   return (
     <>

@@ -3,8 +3,8 @@ import { Trash } from "@phosphor-icons/react";
 import { useContext, useEffect, useState } from "react";
 import { useMembers } from "@src/hooks/useMembers";
 import { removeMember, updateMemberRole } from "@src/services/teamsServices";
-import { UserContext } from "@src/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "@src/contexts/AuthContext";
 
 interface TeamMember {
   role: string;
@@ -28,14 +28,13 @@ const roles = [
 
 export function Members({ teamId }: { teamId: string }) {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
   const { members, getMembers } = useMembers();
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   const [loadingMemberId, setLoadingMemberId] = useState<string | null>(null);
 
   const [isRemoving, setIsRemoving] = useState<boolean>(false);
-  console.log(isRemoving);
   const [removingMember, setRemovingMember] = useState<string | null>(null);
 
   const handleMember = async (memberId: string, roleValue: string) => {

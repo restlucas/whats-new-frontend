@@ -1,5 +1,4 @@
 import { ThumbsUp } from "@phosphor-icons/react";
-import { User } from "@src/contexts/UserContext";
 import { toggleCommentLike } from "@src/services/userServices";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { format, parseISO } from "date-fns";
@@ -7,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { NewComment } from "./new-coment";
 import { Article } from "@src/services/newsServices";
+import { UserProps } from "@src/contexts/AuthContext";
 
 interface Comment {
   id: string;
@@ -23,7 +23,7 @@ interface Comment {
 }
 
 interface CommentsProps {
-  user: User;
+  user: UserProps;
   articleId: string;
   articleComments: Comment[];
   refetch: (

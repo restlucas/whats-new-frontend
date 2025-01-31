@@ -9,10 +9,10 @@ import {
   setLocalStorage,
 } from "@src/utils/storageUtils";
 import { TeamContext } from "@src/contexts/TeamContext";
-import { UserContext } from "@src/contexts/UserContext";
 import { handleNews } from "@src/services/newsServices";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "@phosphor-icons/react";
+import { AuthContext } from "@src/contexts/AuthContext";
 
 export interface NewsProps {
   title: string;
@@ -53,7 +53,7 @@ const categories = [
 export function NewsForm({ action, slug, filledForm }: FormProps) {
   const navigate = useNavigate();
   const { activeTeam } = useContext(TeamContext);
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AuthContext);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState<NewsProps>({

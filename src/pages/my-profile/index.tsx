@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { Input } from "@src/components/input";
-import { UserContext } from "@src/contexts/UserContext";
 import { updateProfile } from "@src/services/userServices";
 import { setLocalStorage } from "@src/utils/storageUtils";
 import { FormEvent, useContext, useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import { Helmet } from "react-helmet-async";
 import { transformToFile } from "@src/utils/transformToFile";
 import { Picture } from "./components/picture";
 import { z } from "zod";
+import { AuthContext } from "@src/contexts/AuthContext";
 
 const formSchema = z
   .object({
@@ -40,7 +40,7 @@ export interface ProfileFormProps {
 
 export function MyProfile() {
   const navigate = useNavigate();
-  const { user, setUser, signOut } = useContext(UserContext);
+  const { user, setUser, signOut } = useContext(AuthContext);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);

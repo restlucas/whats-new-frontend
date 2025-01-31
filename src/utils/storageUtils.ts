@@ -1,10 +1,10 @@
+import { UserProps } from "@src/contexts/AuthContext";
 import { Team } from "@src/contexts/TeamContext";
-import { User } from "@src/contexts/UserContext";
 import { NewsProps } from "@src/pages/(panel)/news/components/form";
 
 export const setLocalStorage = (
   key: string,
-  value: Team | Team[] | User | NewsProps | string[] | null
+  value: Team | Team[] | UserProps | NewsProps | string[] | null
 ): void => {
   try {
     const stringifiedValue = JSON.stringify(value);

@@ -2,14 +2,15 @@ import { Header } from "./header";
 import { Footer } from "./footer";
 import { Outlet } from "react-router-dom";
 import { useContext, useEffect } from "react";
-import { User, UserContext } from "@src/contexts/UserContext";
 import { getLocalStorage } from "@src/utils/storageUtils";
+import { LikeContext } from "@src/contexts/LikeContext";
+import { UserProps } from "@src/contexts/AuthContext";
 
 export function Layout() {
-  const { getLikes } = useContext(UserContext);
+  const { getLikes } = useContext(LikeContext);
 
   useEffect(() => {
-    const userInStorage = getLocalStorage("@whats-new:user") as User;
+    const userInStorage = getLocalStorage("@whats-new:user") as UserProps;
 
     if (userInStorage) {
       getLikes(userInStorage.id);

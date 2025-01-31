@@ -1,12 +1,12 @@
 import { AxiosError } from "axios";
 import axiosInstance from "../lib/axios";
-import { UserData } from "@src/contexts/UserContext";
+import { RegisterUser } from "@src/contexts/AuthContext";
 
 export const check = async () => {
   try {
     const response = await axiosInstance.get("/auth/check");
 
-    return response;
+    return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorMessage = error.message;
@@ -78,11 +78,11 @@ export const logout = async () => {
   }
 };
 
-export const register = async (user: UserData) => {
+export const register = async (user: RegisterUser, registerMode: string) => {
   try {
     const response = await axiosInstance.post(
       "/user",
-      { user },
+      { user, registerMode },
       {
         headers: {
           "Content-Type": "multipart/form-data",
