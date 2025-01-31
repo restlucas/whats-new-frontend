@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { Input } from "@src/components/input";
 import { Helmet } from "react-helmet-async";
 import { AuthButton } from "@src/components/button/auth";
@@ -32,7 +32,6 @@ export function Register({ registerMode, handleAuth }: RegisterProps) {
     image: "",
     confirmPassword: "",
   });
-  const [token] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const { signUp } = useContext(AuthContext);
 

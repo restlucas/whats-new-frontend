@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import axiosInstance from "../lib/axios";
-import { RegisterUser } from "@src/contexts/AuthContext";
+import { RegisterUserProps } from "@src/contexts/AuthContext";
 
 export const check = async () => {
   try {
@@ -78,7 +78,10 @@ export const logout = async () => {
   }
 };
 
-export const register = async (user: RegisterUser, registerMode: string) => {
+export const register = async (
+  user: RegisterUserProps,
+  registerMode: string
+) => {
   try {
     const response = await axiosInstance.post(
       "/user",

@@ -5,7 +5,7 @@ import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 import { Comments } from "./components/comments";
-import { AuthContext, User } from "@src/contexts/AuthContext";
+import { AuthContext, UserProps } from "@src/contexts/AuthContext";
 import { LikeContext } from "@src/contexts/LikeContext";
 
 export function Article() {
@@ -183,7 +183,7 @@ export function Article() {
               </h2>
 
               <Comments
-                user={user as User}
+                user={user as UserProps}
                 refetch={refetch}
                 articleId={article.id}
                 articleComments={article.comments}

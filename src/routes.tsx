@@ -15,7 +15,7 @@ import { MyProfile } from "./pages/my-profile";
 import { ResetPassword } from "./pages/auth/reset-password";
 import { AppProviders } from "./components/appProviders";
 import { Edit } from "./pages/(panel)/news/edit";
-import { ProtectedRoute } from "./components/ProtectedRoute";
+import { ProtectedRoute } from "./components/protectedRoute";
 
 export const AppRoutes = () => {
   return (

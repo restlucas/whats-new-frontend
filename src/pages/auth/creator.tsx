@@ -9,8 +9,6 @@ export function AuthCreator() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const method = queryParams.get("method");
-  const token = queryParams.get("token");
-  const email = queryParams.get("email");
 
   const [auth, setAuth] = useState("login");
 
@@ -19,7 +17,7 @@ export function AuthCreator() {
   };
 
   useEffect(() => {
-    if (method === "register" && token && email) {
+    if (method === "register") {
       setAuth("register");
     }
   }, []);
@@ -52,11 +50,7 @@ export function AuthCreator() {
           <Login entranceMode="CREATOR" handleAuth={handleAuth} />
         )}
         {auth === "register" && (
-          <Register
-            registerMode="CREATOR"
-            params={{ token: token, email: email }}
-            handleAuth={handleAuth}
-          />
+          <Register registerMode="CREATOR" handleAuth={handleAuth} />
         )}
         {auth === "forgot" && <Forgot />}
       </aside>
