@@ -109,7 +109,7 @@ const TableCard = ({ title, tableTitle, data, fetching, icon }: TableProps) => {
         <h3 className="text-lg font-bold">{title}</h3>
         {icon}
       </div>
-      <div className="overflow-x-scroll xl:overflow-hidden">
+      <div className="overflow-x-auto">
         <table className="w-full table-auto overflow-hidden">
           <thead>
             <tr className="text-sm font-semibold text-left rtl:text-right">
@@ -138,7 +138,7 @@ const TableCard = ({ title, tableTitle, data, fetching, icon }: TableProps) => {
                       <Link
                         target="_blank"
                         to={`/article/${(row as LastFiveNews).slug}`}
-                        className="line-clamp-1 cursor-pointer hover:underline"
+                        className="text-nowrap cursor-pointer hover:underline"
                       >
                         {(row as LastFiveNews).title}
                       </Link>

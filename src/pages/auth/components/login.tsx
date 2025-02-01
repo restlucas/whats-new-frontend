@@ -44,7 +44,7 @@ export function Login({ entranceMode, handleAuth }: LoginProps) {
       setMessage(null);
       const response = await signIn(form, entranceMode);
 
-      if (response.status === 401) {
+      if (response.status !== 200) {
         setMessage({
           code: response.status,
           title: response.message as string,

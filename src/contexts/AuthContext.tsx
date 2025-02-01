@@ -1,4 +1,10 @@
-import { check, login, logout, register } from "@src/services/authServices";
+import {
+  check,
+  handleRefresh,
+  login,
+  logout,
+  register,
+} from "@src/services/authServices";
 import {
   getLocalStorage,
   removeLocalStorage,
@@ -61,24 +67,36 @@ export function AuthContextProvider({
       "@whats-new:teams",
       "@whats-new:active-team",
       "@whats-new:liked-news",
+      "@whats-new:accessToken",
     ];
 
     keysToRemove.forEach(removeLocalStorage);
   };
 
   const checkAuth = async () => {
+    const accessToken = getLocalStorage("@whats-new:accessToken");
+
+    if (accessToken) {
+      setIsAuthenticated(true);
+      setUser(getLocalStorage("@whats-new:user"));
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await check();
+      const response = await handleRefresh();
       if (response.isValid) {
         setIsAuthenticated(true);
-        setUser(getLocalStorage("@whats-new:user") as UserProps);
+        setLocalStorage("@whats-new:user", response.user);
+        setUser(response.user);
+        setLocalStorage("@whats-new:accessToken", response.accessToken);
       } else {
         setIsAuthenticated(false);
         setUser(null);
         clearUserData();
       }
     } catch (error) {
-      console.error("Erro ao verificar autenticação:", error);
+      console.error("Error on check authentication:", error);
       setIsAuthenticated(false);
       setUser(null);
       clearUserData();
@@ -94,6 +112,8 @@ export function AuthContextProvider({
     setLoading(true);
     try {
       const response = await login(credentials, entranceMode);
+
+      setLocalStorage("@whats-new:accessToken", response.accessToken);
       setLocalStorage("@whats-new:user", response.user);
       setUser(response.user);
       setIsAuthenticated(true);

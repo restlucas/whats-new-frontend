@@ -41,11 +41,9 @@ export function TeamsButton() {
           className="w-full h-10 flex items-center justify-center cursor-pointer group"
         >
           <div className="border border-r-0 border-tertiary/20 dark:border-tertiary w-full h-full px-2 flex-1 rounded-tl-md rounded-bl-md flex items-center justify-start duration-200 group-hover:text-white group-hover:bg-red-vibrant">
-            <span className="font-bold text-nowrap line-clamp-1">
-              {activeTeam?.name}
-            </span>
+            <span className="font-bold line-clamp-1">{activeTeam?.name}</span>
           </div>
-          <div className="h-10 w-10 flex items-center justify-center rounded-tr-md rounded-br-md bg-red-vibrant">
+          <div className="h-10 min-w-10 flex items-center justify-center rounded-tr-md rounded-br-md bg-red-vibrant">
             <CaretLeft
               size={22}
               weight="bold"

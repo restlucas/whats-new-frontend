@@ -28,22 +28,15 @@ export const login = async (
   entranceMode: string
 ) => {
   try {
-    const response = await axiosInstance.post(
-      "/auth/login",
-      {
-        credentials,
-        entranceMode,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axiosInstance.post("/auth/login", {
+      credentials,
+      entranceMode,
+    });
 
     return {
       status: response.status,
       user: response.data.user,
+      accessToken: response.data.accessToken,
     };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -155,4 +148,10 @@ export const validateToken = async (token: string) => {
       return { message: "Erro de rede", status: 500 };
     }
   }
+};
+
+export const handleRefresh = async () => {
+  const response = await axiosInstance.post("/auth/refresh");
+
+  return response.data;
 };
