@@ -1,5 +1,4 @@
 import {
-  check,
   handleRefresh,
   login,
   logout,
