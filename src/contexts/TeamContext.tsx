@@ -100,7 +100,6 @@ export function TeamContextProvider({ children }: TeamContextProviderProps) {
   }, []);
 
   useEffect(() => {
-    console.log("shes got bad for me");
     const user = getLocalStorage<{ id: string } | null>("@whats-new:user");
 
     if (user && "id" in user) {
