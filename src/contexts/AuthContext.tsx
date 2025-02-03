@@ -154,10 +154,7 @@ export function AuthContextProvider({
   const signOut = async (message: string) => {
     await logout();
 
-    removeLocalStorage("@whats-new:user");
-    removeLocalStorage("@whats-new:teams");
-    removeLocalStorage("@whats-new:active-team");
-    removeLocalStorage("@whats-new:liked-news");
+    clearUserData();
 
     alert(message);
     await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -1,6 +1,5 @@
 import { AuthContextProvider } from "@src/contexts/AuthContext";
 import { LikeContextProvider } from "@src/contexts/LikeContext";
-import { TeamContextProvider } from "@src/contexts/TeamContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -21,12 +20,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
         <LikeContextProvider>
-          <TeamContextProvider>
-            <HelmetProvider>
-              <Helmet titleTemplate="%s | What's new?" />
-              {children}
-            </HelmetProvider>
-          </TeamContextProvider>
+          <HelmetProvider>
+            <Helmet titleTemplate="%s | What's new?" />
+            {children}
+          </HelmetProvider>
         </LikeContextProvider>
       </AuthContextProvider>
     </QueryClientProvider>

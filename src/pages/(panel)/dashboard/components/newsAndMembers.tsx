@@ -1,9 +1,10 @@
 import { Article, HourglassSimpleHigh } from "@phosphor-icons/react";
+import { TeamContext } from "@src/contexts/TeamContext";
 import {
   LastFiveNews,
   useLastNewsAndTopMembers,
 } from "@src/hooks/useStatistics";
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { Link } from "react-router-dom";
 
 interface UserProps {
@@ -22,9 +23,11 @@ interface TableProps {
 }
 
 const TableCard = ({ title, tableTitle, data, fetching, icon }: TableProps) => {
-  if (fetching && data.length === 0) {
+  const { loading } = useContext(TeamContext);
+
+  if (loading || (fetching && data.length === 0)) {
     return (
-      <div className="w-full border rounded-xl p-6 border-tertiary/20 dark:border-tertiary flex flex-col gap-4">
+      <div className="w-full border rounded-xl p-6 border-tertiary/20 dark:border-tertiary flex flex-col gap-4 overflow-x-hidden">
         <div className="w-full flex items-center justify-between">
           <div className="h-7 w-[200px] bg-tertiary/20 dark:bg-tertiary rounded-md animate-pulse" />
         </div>

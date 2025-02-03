@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
+import { TeamContext } from "@src/contexts/TeamContext";
+import { ReactNode, useContext, useEffect, useState } from "react";
 
 interface SimpleCardProps {
   title: string;
@@ -17,6 +18,7 @@ export function SimpleCard({
   subText,
   icon,
 }: SimpleCardProps) {
+  const { loading } = useContext(TeamContext);
   const [displayedAmount, setDisplayedAmount] = useState(0);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export function SimpleCard({
     }
   }, [fetching, amount]);
 
-  if (fetching && !amount)
+  if (loading || (fetching && !amount))
     return (
       <div className="border rounded-xl p-6 border-tertiary/20 dark:border-tertiary flex flex-col gap-3">
         <div className="w-full flex items-center justify-between">
