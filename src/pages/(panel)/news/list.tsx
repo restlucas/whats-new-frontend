@@ -19,6 +19,7 @@ import { format, parseISO } from "date-fns";
 import { useFetchBasicNews } from "@src/hooks/useFetchNews";
 import { Link } from "react-router-dom";
 import { removeNews } from "@src/services/newsServices";
+import { createPortal } from "react-dom";
 
 interface FilterProps {
   title: string;
@@ -189,78 +190,103 @@ const NewsOptions = ({
   linkSlug: string;
   refetchNews: () => void;
 }) => {
-  const divRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [position, setPosition] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  });
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (divRef.current && !divRef.current.contains(event.target as Node)) {
-      setShowOptions(false);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node) &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) // Verifica se clicou dentro do menu
+      ) {
+        setShowOptions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleOpenOptions = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setPosition({
+        top: rect.top + window.scrollY,
+        left: rect.left + window.scrollX - 112,
+      });
+      setShowOptions(!showOptions);
     }
   };
 
   const deleteNews = async (newsId: string) => {
     const areYouSure = confirm(`Do you really want to delete the news?`);
-
     if (areYouSure) {
       const response = await removeNews(newsId);
-
       if (response.status === 200) {
-        alert("News delete successfully");
+        alert("News deleted successfully");
         refetchNews();
       }
     }
     setShowOptions(false);
   };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
-    <div ref={divRef} className="relative">
+    <>
       <button
-        onClick={() => setShowOptions(!showOptions)}
+        ref={buttonRef}
+        onClick={handleOpenOptions}
         type="button"
         className="flex items-center justify-center h-8 w-8 rounded-md duration-100 hover:bg-tertiary/20 dark:hover:bg-tertiary"
       >
         <CirclesFour size={16} weight="bold" />
       </button>
 
-      {showOptions && (
-        <div className="animate-fade-xaxis absolute z-[100] right-full top-0 mr-1 flex flex-col border border-tertiary/20 dark:border-tertiary rounded-md bg-light dark:bg-dark ">
-          <Link
-            target="_blank"
-            to={`${clientUrl + "article/" + linkSlug}`}
-            className="flex items-center justify-between gap-4 px-3 py-2 hover:bg-tertiary/20 dark:hover:bg-tertiary"
+      {showOptions &&
+        createPortal(
+          <div
+            ref={menuRef}
+            className="animate-fade-xaxis absolute z-[999] flex flex-col border border-tertiary/20 dark:border-tertiary rounded-md bg-light dark:bg-dark shadow-md dark:text-white"
+            style={{
+              top: position.top,
+              left: position.left,
+              position: "absolute",
+            }}
           >
-            <span className="font-semibold">Go to</span>
-            <Eye size={16} weight="bold" />
-          </Link>
-          {/* <button className="flex items-center justify-between gap-4 px-3 py-2 hover:bg-tertiary/20 dark:hover:bg-tertiary">
-            <span className="font-semibold">Edit</span>
-            <PencilSimple size={16} weight="bold" />
-          </button> */}
-          <Link
-            to={`edit?linkSlug=${linkSlug}`}
-            className="flex items-center justify-between gap-4 px-3 py-2 hover:bg-tertiary/20 dark:hover:bg-tertiary"
-          >
-            <span className="font-semibold">Edit</span>
-            <PencilSimple size={16} weight="bold" />
-          </Link>
-          <button
-            onClick={() => deleteNews(newsId)}
-            className="flex items-center justify-between gap-4 px-3 py-2 hover:bg-tertiary/20 dark:hover:bg-tertiary"
-          >
-            <span className="font-semibold">Delete</span>
-            <Trash size={16} weight="bold" />
-          </button>
-        </div>
-      )}
-    </div>
+            <Link
+              target="_blank"
+              to={`${clientUrl + "article/" + linkSlug}`}
+              className="flex items-center justify-between gap-4 px-3 py-2 hover:bg-tertiary/20 dark:hover:bg-tertiary"
+            >
+              <span className="font-semibold">Go to</span>
+              <Eye size={16} weight="bold" />
+            </Link>
+            <Link
+              to={`edit?linkSlug=${linkSlug}`}
+              className="flex items-center justify-between gap-4 px-3 py-2 hover:bg-tertiary/20 dark:hover:bg-tertiary"
+            >
+              <span className="font-semibold">Edit</span>
+              <PencilSimple size={16} weight="bold" />
+            </Link>
+            <button
+              onClick={() => deleteNews(newsId)}
+              className="flex items-center justify-between gap-4 px-3 py-2 hover:bg-tertiary/20 dark:hover:bg-tertiary"
+            >
+              <span className="font-semibold">Delete</span>
+              <Trash size={16} weight="bold" />
+            </button>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
@@ -479,7 +505,7 @@ export function List() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-scroll xl:overflow-hidden border border-tertiary/20 dark:border-tertiary rounded-md">
+        <div className="overflow-x-scroll xl:overflow-x-hidden border border-tertiary/20 dark:border-tertiary rounded-md">
           <table className="w-full border-collapse rounded-md">
             <thead>
               <tr className="text-sm font-bold w-full overflow-x-scroll text-left rtl:text-right">
@@ -490,7 +516,7 @@ export function List() {
                 <th className="p-3 w-[10%]"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="">
               {loading && <LoadingRow />}
               {error && <ErrorRow />}
               {isFetching && <SkeletonRows pageSize={options.pageSize} />}

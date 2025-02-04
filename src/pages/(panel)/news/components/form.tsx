@@ -13,6 +13,7 @@ import { handleNews } from "@src/services/newsServices";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { AuthContext } from "@src/contexts/AuthContext";
+import { SubmitButton } from "@src/components/button/submit";
 
 export interface NewsProps {
   title: string;
@@ -22,13 +23,9 @@ export interface NewsProps {
 }
 
 interface FormProps {
-  // form: NewsProps;
   action: "post" | "put";
   slug?: string;
   filledForm?: NewsProps;
-  // handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  // handleContent: (newValue: string) => void;
-  // resetForm: () => void;
 }
 
 const formSchema = z.object({
@@ -55,6 +52,7 @@ export function NewsForm({ action, slug, filledForm }: FormProps) {
   const { activeTeam } = useContext(TeamContext);
   const { user } = useContext(AuthContext);
 
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState<NewsProps>({
     title: "",
@@ -83,6 +81,7 @@ export function NewsForm({ action, slug, filledForm }: FormProps) {
     setErrors({});
 
     if (activeTeam && user) {
+      setSubmitting(true);
       const response = await handleNews(
         {
           fields: form,
@@ -97,10 +96,11 @@ export function NewsForm({ action, slug, filledForm }: FormProps) {
         if (action === "post") {
           await removeLocalStorage("@whats-new:draft-news-form");
           alert("News created successfully!");
+          navigate(0);
         } else {
           alert("News updated successfully!");
+          navigate(-1);
         }
-        navigate(0);
       }
     }
   };
@@ -211,12 +211,13 @@ export function NewsForm({ action, slug, filledForm }: FormProps) {
           >
             Reset fields
           </button>
-          <button
+          <SubmitButton loading={submitting} text="Submit" />
+          {/* <button
             type="submit"
             className="py-1 px-3 rounded-md bg-red-vibrant font-semibold text-white duration-100 hover:bg-red-hover"
           >
-            Submit
-          </button>
+            Create
+          </button> */}
         </div>
       </div>
     </form>

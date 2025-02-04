@@ -91,19 +91,6 @@ export function Search() {
     parseQueryString(location.search)
   );
 
-  // const {
-  //   news,
-  //   error,
-  //   fetchNextPage,
-  //   hasNextPage,
-  //   isFetching,
-  //   isFetchingNextPage,
-  // } = useFetchNews({
-  //   queryName: "search",
-  //   queryParams: { ...selectedFilters, pageSize: 6 },
-  //   queryType: "infinite",
-  // }) as FetchInfiniteResponse;
-
   const { news, hasNextPage, fetching, error, fetchNextPage } = useFetchNews({
     queryName: "search",
     queryOptions: { ...selectedFilters, pageSize: 6 },
@@ -202,7 +189,7 @@ export function Search() {
 
         {/* News list filtered */}
         <h3>Results: {news?.length}</h3>
-        {fetching && news.length === 0 ? (
+        {fetching || news.length === 0 ? (
           <Skeleton />
         ) : (
           <NewsList news={news} error={error} />
