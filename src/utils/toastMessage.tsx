@@ -1,6 +1,6 @@
 import { ThemeContext } from "@src/contexts/ThemeContext";
 import { useContext } from "react";
-import { ToastContainer, ToastContainerProps } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // export default {

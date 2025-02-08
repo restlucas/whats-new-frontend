@@ -20,7 +20,7 @@ import { useFetchBasicNews } from "@src/hooks/useFetchNews";
 import { Link } from "react-router-dom";
 import { removeNews } from "@src/services/newsServices";
 import { createPortal } from "react-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface FilterProps {
   title: string;
