@@ -54,24 +54,32 @@ export function HealthNews() {
         </Link>
       </div>
 
-      <div className="overflow-hidden p-2 flex flex-col w-full xl:w-[300px] rounded-md border border-tertiary/20 dark:border-tertiary divide-y dark:divide-tertiary">
-        {healthNews.map((news: News, index: number) => {
-          return (
-            <Link
-              to={`article/${news.slug}`}
-              key={index}
-              className="p-3 w-full text-lg font-bold line-clamp-1 xl:line-clamp-4 cursor-pointer duration-100 hover:underline overflow-hidden grid gap-4 items-start grid-cols-[1fr_min-content]"
-            >
-              <span className="">{news.title}</span>
-              <div className="flex items-center justify-end gap-4 text-nowrap xl:hidden ">
-                <span className="text-sm">
-                  {dayjs(news.createdAt).format("DD MMMM, YYYY")}
-                </span>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+      {healthNews.length > 0 ? (
+        <div className="overflow-hidden p-2 flex flex-col w-full xl:w-[300px] rounded-md border border-tertiary/20 dark:border-tertiary divide-y dark:divide-tertiary">
+          {healthNews.map((news: News, index: number) => {
+            return (
+              <Link
+                to={`article/${news.slug}`}
+                key={index}
+                className="p-3 w-full text-lg font-bold line-clamp-1 xl:line-clamp-4 cursor-pointer duration-100 hover:underline overflow-hidden grid gap-4 items-start grid-cols-[1fr_min-content]"
+              >
+                <span className="">{news.title}</span>
+                <div className="flex items-center justify-end gap-4 text-nowrap xl:hidden ">
+                  <span className="text-sm">
+                    {dayjs(news.createdAt).format("DD MMMM, YYYY")}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="w-full rounded-md border-2 border-dashed border-secondary-dark dark:border-tertiary flex items-center justify-center p-4">
+          <span className="font-semibold text-nowrap">
+            No health news founded
+          </span>
+        </div>
+      )}
     </div>
   );
 }

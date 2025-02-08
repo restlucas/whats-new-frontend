@@ -20,9 +20,7 @@ export function LikeContextProvider({
 
   const getLikes = async (userId: string) => {
     const response = await fetchLikes(userId);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setLikedNews(response.likes);
+    setLikedNews(response);
     setLocalStorage("@whats-new:liked-news", response.likes);
   };
 

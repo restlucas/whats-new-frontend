@@ -49,7 +49,7 @@ export function TrendingNews() {
 
   if (error) return <p>Error on fetching trending news.</p>;
 
-  return (
+  return trendingNews.length > 0 ? (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 xl:auto-rows-[300px] items-start gap-10">
       {trendingNews?.map((article: News, index: number) => {
         if (index === 1) {
@@ -104,6 +104,10 @@ export function TrendingNews() {
           );
         }
       })}
+    </div>
+  ) : (
+    <div className="w-full rounded-md border-2 border-dashed border-secondary-dark dark:border-tertiary flex items-center justify-center py-4">
+      <span className="font-semibold text-xl">No trending news founded</span>
     </div>
   );
 }

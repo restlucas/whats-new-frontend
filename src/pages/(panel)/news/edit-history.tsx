@@ -30,7 +30,6 @@ export function EditHistory() {
     const response = await fetchEditHistoryByTeam(teamId);
 
     setEditHistory(response);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     setLoading(false);
   };
 

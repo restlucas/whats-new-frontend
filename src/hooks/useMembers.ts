@@ -22,6 +22,7 @@ export const useMembers = () => {
     try {
       const response = await fetchMembers(teamId);
       setMembers(response.data);
+      return response.data;
     } catch (error: unknown) {
       if (error instanceof Error) setError("Error on fetch member");
     } finally {

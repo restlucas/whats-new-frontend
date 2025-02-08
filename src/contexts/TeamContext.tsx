@@ -70,7 +70,6 @@ export function TeamContextProvider({ children }: TeamContextProviderProps) {
     try {
       const response = await fetchTeamsByUser(userId);
       const fetchedTeams = validateTeams(response.data);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       if (fetchedTeams.length === 0) {
         setTeams([]);

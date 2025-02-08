@@ -9,6 +9,8 @@ import { transformToFile } from "@src/utils/transformToFile";
 import { Picture } from "./components/picture";
 import { z } from "zod";
 import { AuthContext } from "@src/contexts/AuthContext";
+import { toast } from "react-toastify";
+import { ToastMessage } from "@src/utils/toastMessage";
 
 const formSchema = z
   .object({
@@ -94,16 +96,24 @@ export function MyProfile() {
 
     const response = await updateProfile(formData);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    alert(response.message);
+    if (response.success) {
+      if (formProfile.password !== "") {
+        toast.success(
+          "Profile updated succcessfully, please make login again.",
+          {
+            onClose: () => signOut(""),
+          }
+        );
+      } else {
+        toast.success(response.message);
+      }
 
-    if (formProfile.password !== "") {
-      signOut("Please, make login again.");
-      return;
+      setLocalStorage("@whats-new:user", response.data);
+      setUser(response.data);
+    } else {
+      toast.error(response.message);
     }
 
-    setLocalStorage("@whats-new:user", response.data);
-    setUser(response.data);
     setLoading(false);
   };
 
@@ -262,6 +272,7 @@ export function MyProfile() {
             </form>
           </div>
         </div>
+        <ToastMessage />
       </section>
     </>
   );

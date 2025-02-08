@@ -33,10 +33,12 @@ export const login = async (
       entranceMode,
     });
 
+    const { data: responseData } = response.data;
+
     return {
       status: response.status,
-      user: response.data.user,
-      accessToken: response.data.accessToken,
+      user: responseData.user,
+      accessToken: responseData.accessToken,
     };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -119,17 +121,6 @@ export const requestResetPassword = async (userEmail: string) => {
   });
 };
 
-// export const validateToken = async (token: string) => {
-//   const response = await axiosInstance.get("/users/validate-token", {
-//     params: { token },
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   console.log(response);
-//   return response;
-// };
-
 export const validateToken = async (token: string) => {
   try {
     const response = await axiosInstance.get("/users/validate-token", {
@@ -153,5 +144,5 @@ export const validateToken = async (token: string) => {
 export const handleRefresh = async () => {
   const response = await axiosInstance.post("/auth/refresh");
 
-  return response.data;
+  return response.data.data;
 };

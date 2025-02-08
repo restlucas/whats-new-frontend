@@ -14,6 +14,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "@phosphor-icons/react";
 import { AuthContext } from "@src/contexts/AuthContext";
 import { SubmitButton } from "@src/components/button/submit";
+import { toast } from "react-toastify";
+import { ToastMessage } from "@src/utils/toastMessage";
 
 export interface NewsProps {
   title: string;
@@ -92,15 +94,14 @@ export function NewsForm({ action, slug, filledForm }: FormProps) {
         action
       );
 
-      if (response.status === 201) {
-        if (action === "post") {
-          await removeLocalStorage("@whats-new:draft-news-form");
-          alert("News created successfully!");
-          navigate(0);
-        } else {
-          alert("News updated successfully!");
-          navigate(-1);
-        }
+      if (response.success) {
+        await removeLocalStorage("@whats-new:draft-news-form");
+        toast.success(response.message, {
+          onClose: () => (action === "post" ? navigate(0) : navigate(-1)),
+        });
+      } else {
+        toast.error(response.message);
+        setSubmitting(false);
       }
     }
   };
@@ -220,6 +221,7 @@ export function NewsForm({ action, slug, filledForm }: FormProps) {
           </button> */}
         </div>
       </div>
+      <ToastMessage />
     </form>
   );
 }

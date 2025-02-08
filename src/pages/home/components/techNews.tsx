@@ -32,7 +32,7 @@ export function TechNews() {
 
   if (error) return <p>Error on fetching tech news.</p>;
 
-  return (
+  return technologyNews.length > 0 ? (
     <div className="w-full bg-red-vibrant rounded-xl p-4 md:p-8 grid grid-cols-1 xl:grid-cols-2 grid-auto-rows-[minmax(0, 220px)] gap-4 md:gap-8">
       {technologyNews.map((news: News, index: number) => {
         return (
@@ -48,6 +48,14 @@ export function TechNews() {
           </div>
         );
       })}
+    </div>
+  ) : (
+    <div className="">
+      <div className="w-full bg-red-vibrant rounded-md p-4 flex items-center justify-center py-4">
+        <span className="font-semibold text-xl text-white">
+          No tech news founded
+        </span>
+      </div>
     </div>
   );
 }

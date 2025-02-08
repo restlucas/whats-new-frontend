@@ -65,7 +65,7 @@ export function Register({ registerMode, handleAuth }: RegisterProps) {
           title: `User successfully created. Please, make login!`,
         });
 
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 1500));
 
         url.search = "";
         window.history.replaceState({}, "", url.toString());

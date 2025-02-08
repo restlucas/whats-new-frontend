@@ -72,6 +72,7 @@ export function Article() {
         </div>
       </section>
     );
+
   if (error)
     return (
       <section className="w-full flex-1 flex items-center justify-center">

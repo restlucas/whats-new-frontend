@@ -11,6 +11,9 @@ import {
 } from "@src/services/teamsServices";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@src/contexts/AuthContext";
+import { toast, ToastContainer } from "react-toastify";
+import { ToastMessage } from "@src/utils/toastMessage";
+import { toastConfirmAlert } from "@src/utils/toastConfirm";
 
 interface MemberInvitations {
   id: string;
@@ -80,10 +83,16 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
   };
 
   const handleCancelInvite = async (inviteId: string, email: string) => {
-    if (confirm(`Revoke invite to ${email}?`)) {
+    const areYouSure = await toastConfirmAlert(
+      `Do you really want to revoke the invitation for ${email}?`
+    );
+
+    if (areYouSure) {
       try {
-        await revokeInvitation(inviteId);
-        fetchMemberInvitations();
+        const response = await revokeInvitation(inviteId);
+        toast[response.success ? "success" : "error"](response.message, {
+          onClose: () => (response.success ? fetchMemberInvitations() : null),
+        });
       } catch (error) {
         console.error("Error on decline invitation:", error);
       }
@@ -96,13 +105,21 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
 
   const handleInvitationAction = async (inviteId: string, action: string) => {
     const message = action === "ACCEPTED" ? "Accept" : "Decline";
-    const areYouSure = confirm(`${message} team invitation?`);
+
+    const areYouSure = await toastConfirmAlert(`${message} team invitation?`);
 
     if (areYouSure) {
       updateState({ loading: { ...state.loading, teamInvitations: true } });
       try {
-        await handleTeamInvitation(user?.id as string, inviteId, action);
-        navigate(0);
+        const response = await handleTeamInvitation(
+          user?.id as string,
+          inviteId,
+          action
+        );
+
+        toast[response.success ? "success" : "error"](response.message, {
+          onClose: () => (response.success ? navigate(0) : null),
+        });
       } catch (error) {
         console.error("Error on handle invitation:", error);
       } finally {
@@ -116,9 +133,11 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
     updateState({ loading: { ...state.loading, memberInvitations: true } });
     try {
       if (selectedTeam?.id && state.userEmail) {
-        await sendInvitation(selectedTeam.id, state.userEmail);
-        alert("User invited successfully!");
-        fetchMemberInvitations();
+        const response = await sendInvitation(selectedTeam.id, state.userEmail);
+
+        toast[response.success ? "success" : "error"](response.message, {
+          onClose: () => (response.success ? fetchMemberInvitations() : null),
+        });
       }
     } catch (error) {
       alert(`Error on create invitation: ${error}`);
@@ -228,19 +247,6 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
                             className={`${index === 2 ? "" : "border-y"} border-tertiary/20 dark:border-tertiary p-3`}
                           >
                             <div className="flex items-center justify-end gap-1">
-                              <button
-                                title="Resend invitation"
-                                type="button"
-                                onClick={() =>
-                                  confirm(
-                                    `Resend invite to ${memberInvite.user.email}?`
-                                  )
-                                }
-                                className="flex items-center justify-center gap-2 h-8 px-3 rounded-md duration-100 hover:bg-tertiary/20 dark:hover:bg-tertiary"
-                              >
-                                <span className="font-semibold">Resend</span>
-                                <ArrowClockwise size={16} weight="bold" />
-                              </button>
                               <button
                                 title="Resend invitation"
                                 type="button"
@@ -381,6 +387,8 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
           </div>
         </div>
       </div>
+      {/* <ToastContainer /> */}
+      <ToastMessage />
     </div>
   );
 }

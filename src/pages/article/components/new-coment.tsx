@@ -18,15 +18,8 @@ export function NewComment({ userId, articleId, refetch }: NewCommentProps) {
     e.preventDefault();
     setLoading(true);
 
-    const response = await makeComment(
-      userId as string,
-      articleId as string,
-      comment
-    );
+    await makeComment(userId as string, articleId as string, comment);
 
-    alert(response.data.message);
-
-    await new Promise((resolve) => setTimeout(resolve, 1500));
     setLoading(false);
     setComment("");
     refetch();

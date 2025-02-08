@@ -27,7 +27,6 @@ export function Edit() {
     };
 
     setFilledForm(data);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
     setLoading(false);
   };
 

@@ -35,8 +35,6 @@ export function ResetPassword() {
   const checkTokenValidation = async (token: string) => {
     const response = await validateToken(token);
     setIsTokenValid(response.isValid);
-
-    await new Promise((resolve) => setTimeout(resolve, 1500));
     setLoading(false);
   };
 

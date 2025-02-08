@@ -13,7 +13,7 @@ export function Home() {
       {/* Today's news */}
       <section className="w-full h-auto">
         <h1 className="font-bold text-4xl mb-10">
-          <span className="text-title">{"#Today's"}</span> News in your region
+          <span className="text-title">{"#Today's"}</span> News
         </h1>
         <TodaysNews />
       </section>

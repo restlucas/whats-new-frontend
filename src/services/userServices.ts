@@ -4,10 +4,11 @@ export const updateProfile = async (data: FormData) => {
   try {
     const response = await axiosInstance.put("/user", data);
 
+    const { data: responseData, message, success } = response.data;
     return {
-      code: response.status,
-      message: response.data.message,
-      data: response.data.user,
+      success: success,
+      message: message,
+      data: responseData,
     };
   } catch (error) {
     console.error("Error on update profile:", error);
@@ -21,7 +22,8 @@ export const fetchLikes = async (userId: string) => {
       params: { userId },
     });
 
-    return response.data;
+    const { data } = response.data;
+    return data;
   } catch (error) {
     console.error("Error fetching likes:", error);
     throw new Error("Failed to fetch likes");

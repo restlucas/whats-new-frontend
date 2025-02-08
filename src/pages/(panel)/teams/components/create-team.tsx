@@ -4,6 +4,8 @@ import { FormEvent, useContext, useState } from "react";
 import { useTeams } from "@src/hooks/useTeams";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@src/contexts/AuthContext";
+import { toast } from "react-toastify";
+import { ToastMessage } from "@src/utils/toastMessage";
 
 export function CreateTeam() {
   const navigate = useNavigate();
@@ -16,10 +18,9 @@ export function CreateTeam() {
     if (user) {
       const response = await newTeam(user.id, teamName);
 
-      if (response) {
-        alert(response.message);
-        navigate(0);
-      }
+      toast[response.success ? "success" : "error"](response.message, {
+        onClose: () => navigate(0),
+      });
     }
   };
 
@@ -52,6 +53,8 @@ export function CreateTeam() {
           )}
         </button>
       </form>
+
+      <ToastMessage />
     </div>
   );
 }

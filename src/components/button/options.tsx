@@ -1,22 +1,21 @@
-import { ArrowsCounterClockwise, CaretDown } from "@phosphor-icons/react";
-import { useEffect, useRef, useState } from "react";
+import { ArrowsCounterClockwise, QuestionMark } from "@phosphor-icons/react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 interface OptionsButtonProps {
-  memberId: string;
-  selectedValue: string;
+  memberRole: {
+    role: string;
+    icon: ReactNode;
+  };
   options: { value: string; name: string; description: string }[];
   disabled?: boolean;
   loading: boolean;
-  handleRole: (memberId: string, roleValue: string) => void;
 }
 
 export function OptionsButton({
-  memberId,
-  selectedValue,
+  memberRole,
   options,
   disabled,
   loading,
-  handleRole,
 }: OptionsButtonProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showingOptions, setShowingOptions] = useState(false);
@@ -55,7 +54,7 @@ export function OptionsButton({
 
   useEffect(() => {
     setIsVisible(false);
-  }, [selectedValue]);
+  }, [memberRole]);
 
   return (
     <div className="relative">
@@ -78,10 +77,10 @@ export function OptionsButton({
             </div>
             <div className="hidden sm:flex items-center justify-center gap-3">
               <span className="font-semibold">
-                {selectedValue.charAt(0).toUpperCase() +
-                  selectedValue.slice(1).toLowerCase()}
+                {memberRole.role.charAt(0).toUpperCase() +
+                  memberRole.role.slice(1).toLowerCase()}
               </span>
-              <CaretDown size={18} />
+              {memberRole.icon}
             </div>
           </>
         )}
@@ -101,9 +100,6 @@ export function OptionsButton({
             ) => (
               <button
                 key={index}
-                onClick={() =>
-                  handleRole(memberId as string, option.value as string)
-                }
                 className="px-5 py-2 flex flex-col gap-1 w-full cursor-pointer duration-100 hover:bg-tertiary/20 dark:hover:bg-tertiary"
               >
                 <h5 className="font-semibold">{option.name}</h5>

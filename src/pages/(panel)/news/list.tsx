@@ -20,6 +20,7 @@ import { useFetchBasicNews } from "@src/hooks/useFetchNews";
 import { Link } from "react-router-dom";
 import { removeNews } from "@src/services/newsServices";
 import { createPortal } from "react-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 interface FilterProps {
   title: string;
@@ -204,7 +205,7 @@ const NewsOptions = ({
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node) &&
         menuRef.current &&
-        !menuRef.current.contains(event.target as Node) // Verifica se clicou dentro do menu
+        !menuRef.current.contains(event.target as Node)
       ) {
         setShowOptions(false);
       }
@@ -231,10 +232,10 @@ const NewsOptions = ({
     const areYouSure = confirm(`Do you really want to delete the news?`);
     if (areYouSure) {
       const response = await removeNews(newsId);
-      if (response.status === 200) {
-        alert("News deleted successfully");
-        refetchNews();
-      }
+
+      toast[response.success ? "success" : "error"](response.message, {
+        onClose: () => refetchNews(),
+      });
     }
     setShowOptions(false);
   };
@@ -473,6 +474,10 @@ export function List() {
     }
   }, [news]);
 
+  useEffect(() => {
+    refetchNews();
+  }, []);
+
   return (
     <div>
       <h2 className="font-bold mb-10">A list of all your news</h2>
@@ -541,32 +546,6 @@ export function List() {
               pageSize={options.pageSize}
               handleSize={handlePageSizeChange}
             />
-            {/* <div className="flex flex-1 md:flex-0 items-center justify-start md:justify-center gap-2 relative">
-              <span className="">Results per page</span>
-              <button
-                onClick={() => setShowAmountNewsPerPage(!showAmountNewsPerPage)}
-                className="w-14 py-1 flex items-center justify-center gap-2 border border-tertiary/20 dark:border-tertiary rounded-md"
-              >
-                <span>{options.pageSize}</span>
-                <CaretDown size={16} />
-              </button>
-
-              {showAmountNewsPerPage && (
-                <div className="animate-fade-yaxis absolute top-full mt-1 right-0 flex flex-col border border-tertiary/20 dark:border-tertiary rounded-md bg-light dark:bg-dark ">
-                  {resultsPerPage.map((amount: number, index: number) => {
-                    return (
-                      <button
-                        onClick={() => handlePageSizeChange(amount)}
-                        key={index}
-                        className="py-1 w-14 rounded-md hover:bg-tertiary/5 hover:dark:bg-tertiary/60"
-                      >
-                        {amount}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div> */}
 
             <span className="text-center w-full sm:w-auto">
               Page {options.currentPage} of {options.totalPages}

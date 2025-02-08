@@ -126,7 +126,6 @@ export const useFetchBasicNews = (
   const { status, data, error, isFetching, refetch } = useQuery({
     queryKey: ["newsByTeam", queryOptions],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       return await fetchNewsByTeam(queryOptions);
     },
     enabled: teamId !== "" && shouldFetch,
@@ -148,7 +147,6 @@ export const useFetchArticle = ({ articleSlug }: { articleSlug: string }) => {
   const { status, data, error, isFetching, refetch } = useQuery({
     queryKey: ["newsByTeam", articleSlug],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       return await fetchArticle(articleSlug);
     },
     enabled: !!articleSlug,

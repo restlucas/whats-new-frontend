@@ -1,11 +1,14 @@
+import axios from "axios";
 import axiosInstance from "../lib/axios";
 
 export const createTeam = async (userId: string, teamName: string) => {
   try {
-    return await axiosInstance.post("/team", {
+    const response = await axiosInstance.post(`/team`, {
       userId,
       teamName,
     });
+
+    return response.data;
   } catch (error) {
     console.log("Error on create new team: ", error);
     throw new Error("Failed to create new team");
@@ -14,7 +17,8 @@ export const createTeam = async (userId: string, teamName: string) => {
 
 export const fetchTeams = async () => {
   try {
-    return await axiosInstance.get("/teams");
+    const response = await axiosInstance.get("/teams");
+    return response.data;
   } catch (error) {
     console.error("Error fetching teams:", error);
     throw new Error("Failed to fetch teams");
@@ -23,7 +27,8 @@ export const fetchTeams = async () => {
 
 export const fetchTeamsByUser = async (userId: string) => {
   try {
-    return await axiosInstance.get("/team/all", { params: { userId } });
+    const response = await axiosInstance.get(`/team/${userId}/all`);
+    return response.data;
   } catch (error) {
     console.error("Error fetching teams:", error);
     throw new Error("Failed to fetch teams");
@@ -32,7 +37,8 @@ export const fetchTeamsByUser = async (userId: string) => {
 
 export const fetchMembers = async (teamId: string) => {
   try {
-    return await axiosInstance.get("/team/members", { params: { teamId } });
+    const response = await axiosInstance.get(`/team/${teamId}/members`);
+    return response.data;
   } catch (error) {
     console.log("Error on fetching team members: ", error);
     throw new Error("Failed to fetch members");
@@ -45,11 +51,11 @@ export const updateMemberRole = async (
   roleValue: string
 ) => {
   try {
-    return await axiosInstance.put("/team/member/role", {
-      teamId,
+    const response = await axiosInstance.put(`/team/${teamId}/member/role`, {
       userId,
       roleValue,
     });
+    return response.data;
   } catch (error) {
     console.log("Error on updating member role: ", error);
     throw new Error("Failed to update member role");
@@ -58,11 +64,11 @@ export const updateMemberRole = async (
 
 export const getMemberInvitations = async (teamId: string) => {
   try {
-    return await axiosInstance.get("/team/invitations/members", {
-      params: {
-        teamId,
-      },
-    });
+    const response = await axiosInstance.get(
+      `/team/${teamId}/invitations/members`
+    );
+
+    return response.data;
   } catch (error) {
     console.log("Error on get member Invitations: ", error);
     throw new Error("Failed to get member Invitations");
@@ -71,11 +77,13 @@ export const getMemberInvitations = async (teamId: string) => {
 
 export const getTeamInvitations = async (userEmail: string) => {
   try {
-    return await axiosInstance.get("/team/invitations", {
+    const response = await axiosInstance.get("/team/invitations", {
       params: {
         userEmail,
       },
     });
+
+    return response.data;
   } catch (error) {
     console.log("Error on get team invitations: ", error);
     throw new Error("Failed to get member team invitations");
@@ -84,23 +92,24 @@ export const getTeamInvitations = async (userEmail: string) => {
 
 export const sendInvitation = async (teamId: string, userEmail: string) => {
   try {
-    const response = await axiosInstance.post("/team/invitations", {
-      teamId,
+    const response = await axiosInstance.post(`/team/${teamId}/invitations`, {
       userEmail,
     });
-    return response.data;
+    return { success: response.data.success, message: response.data.message };
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.log(error.message);
+    if (axios.isAxiosError(error) && error.response?.data) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error("Server connection error");
     }
   }
 };
 
 export const revokeInvitation = async (inviteId: string) => {
   try {
-    return await axiosInstance.delete("/team/invitations", {
-      data: { inviteId },
-    });
+    const response = await axiosInstance.delete(`/team/invitation/${inviteId}`);
+
+    return { success: response.data.success, message: response.data.message };
   } catch (error) {
     console.log("Error on revoke user invite: ", error);
     throw new Error("Failed on revoke member invite");
@@ -109,9 +118,11 @@ export const revokeInvitation = async (inviteId: string) => {
 
 export const removeMember = async (teamId: string, memberId: string) => {
   try {
-    return await axiosInstance.delete("/team/member", {
-      data: { teamId, memberId },
+    const response = await axiosInstance.delete(`/team/${teamId}/member`, {
+      data: { memberId },
     });
+
+    return { success: response.data.success, message: response.data.message };
   } catch (error) {
     console.log("Error on remove user: ", error);
     throw new Error("Failed on remove member");
@@ -123,9 +134,10 @@ export const handleTeamInvitation = async (
   invitationId: string,
   action: string
 ) => {
-  return await axiosInstance.put("/team/invitation/team", {
-    userId,
+  const response = await axiosInstance.put(`/team/invitation/team/${userId}`, {
     invitationId,
     action,
   });
+
+  return { success: response.data.success, message: response.data.message };
 };

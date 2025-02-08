@@ -6,15 +6,6 @@ import { Members } from "./components/members";
 import { CreateTeam } from "./components/create-team";
 import { TeamContext } from "@src/contexts/TeamContext";
 
-// interface Member {
-//   role: string;
-//   user: {
-//     id: string;
-//     name: string;
-//     email: string;
-//   };
-// }
-
 interface Team {
   id: string;
   name: string;

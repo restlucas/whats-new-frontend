@@ -11,7 +11,6 @@ export const useArticle = (slug: string, userId: string) => {
   const { data, isLoading, error, refetch } = useQuery<Article>({
     queryKey: ["newsByTeam", slug, userId],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       return await fetchArticle(slug, userId);
     },
     enabled: !!slug,

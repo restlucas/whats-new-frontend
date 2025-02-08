@@ -6,3 +6,12 @@ body {
   font-family: "Titillium Web", sans-serif;
   outline: none !important;
 }
+
+:root {
+  --toastify-color-light: #000;
+  --toastify-color-dark: #eaeaea;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}

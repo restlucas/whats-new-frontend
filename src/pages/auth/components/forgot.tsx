@@ -21,8 +21,6 @@ export function Forgot() {
       content: response.data.message,
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
     setLoading(false);
   };
 

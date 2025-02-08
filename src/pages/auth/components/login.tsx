@@ -51,7 +51,7 @@ export function Login({ entranceMode, handleAuth }: LoginProps) {
         });
       } else {
         setMessage({ code: 201, title: "Login successful!" });
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 1500));
         if (entranceMode === "READER") {
           navigate("/");
         } else {

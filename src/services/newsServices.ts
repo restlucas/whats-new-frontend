@@ -65,9 +65,7 @@ export const fetchPaginateNews = async (options: QueryOptions) => {
 
     const {
       data: { news, nextPage, total },
-    } = response;
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    } = response.data;
 
     return {
       data: news || [],
@@ -93,11 +91,10 @@ export const fetchArticle = async (
 
     const response = (await axiosInstance.get("/news/article", {
       params,
-    })) as { data: Article };
+    })) as { data: { data: Article } };
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    return response.data;
+    const article = response.data;
+    return article.data;
   } catch (error) {
     console.error("Error fetching article:", error);
     throw new Error("Failed to fetch article");
@@ -111,9 +108,8 @@ export const fetchNewsByTeam = async ({
   filters,
 }: NewsByTeamProps) => {
   try {
-    return await axiosInstance.get("/news/team", {
+    const response = await axiosInstance.get(`/news/team/${teamId}`, {
       params: {
-        teamId,
         page,
         pageSize,
         filters,
@@ -122,6 +118,8 @@ export const fetchNewsByTeam = async ({
         "Content-Type": "application/json",
       },
     });
+
+    return response.data;
   } catch (error) {
     console.error("Error fetching news by team:", error);
     throw new Error("Failed to fetch news by team");
@@ -132,14 +130,19 @@ export const handleNews = async (
   data: HandleNewsProps,
   action: "post" | "put"
 ) => {
+  const { teamId, userId, ...restData } = data;
   try {
-    const response = await axiosInstance[action]("/news", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axiosInstance[action](
+      `/news/${teamId}/${userId}`,
+      restData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    return { status: response.status, message: response.statusText };
+    return { success: response.data.success, message: response.data.message };
   } catch (error) {
     console.error("Error creating news:", error);
     throw new Error("Failed to create news");
@@ -148,11 +151,9 @@ export const handleNews = async (
 
 export const removeNews = async (newsId: string) => {
   try {
-    const response = await axiosInstance.delete("/news", {
-      data: { newsId },
-    });
+    const response = await axiosInstance.delete(`/news/${newsId}`);
 
-    return { status: response.status, message: response.statusText };
+    return response.data;
   } catch (error) {
     console.error("Error delete news:", error);
     throw new Error("Failed to delete news");
@@ -172,8 +173,8 @@ export const makeComment = async (
   comment: string
 ) => {
   const response = await axiosInstance.post(
-    "/news/comment",
-    { userId, newsId, comment },
+    `/news/comment/${userId}/${newsId}`,
+    { comment },
     {
       headers: {
         "Content-Type": "application/json",
@@ -181,12 +182,10 @@ export const makeComment = async (
     }
   );
 
-  return response;
+  return response.data;
 };
 
 export const fetchEditHistoryByTeam = async (teamId: string) => {
-  const response = await axiosInstance.get("/news/edit/history", {
-    params: { teamId },
-  });
+  const response = await axiosInstance.get(`/news/edit/history/${teamId}`);
   return response.data;
 };

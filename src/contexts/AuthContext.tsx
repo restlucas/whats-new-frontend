@@ -156,8 +156,9 @@ export function AuthContextProvider({
 
     clearUserData();
 
-    alert(message);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (message !== "") {
+      alert(message);
+    }
 
     setUser(null);
 

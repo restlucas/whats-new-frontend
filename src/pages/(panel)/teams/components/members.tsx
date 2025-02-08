@@ -1,10 +1,13 @@
 import { OptionsButton } from "@src/components/button/options";
-import { Trash } from "@phosphor-icons/react";
+import { CrownSimple, Pencil, Trash } from "@phosphor-icons/react";
 import { useContext, useEffect, useState } from "react";
 import { useMembers } from "@src/hooks/useMembers";
-import { removeMember, updateMemberRole } from "@src/services/teamsServices";
+import { removeMember } from "@src/services/teamsServices";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@src/contexts/AuthContext";
+import { toastConfirmAlert } from "@src/utils/toastConfirm";
+import { ToastMessage } from "@src/utils/toastMessage";
+import { toast, ToastContainer } from "react-toastify";
 
 interface TeamMember {
   role: string;
@@ -21,9 +24,14 @@ const roles = [
     value: "OWNER",
     name: "Owner",
     description: "Admin-level access to all resources.",
+    icon: <CrownSimple size={18} />,
   },
-  { value: "EDITOR", name: "Editor", description: "Can create and edit news" },
-  { value: "READER", name: "Reader", description: "Can view and comment." },
+  {
+    value: "EDITOR",
+    name: "Editor",
+    description: "Can create and edit news",
+    icon: <Pencil size={18} />,
+  },
 ];
 
 export function Members({ teamId }: { teamId: string }) {
@@ -31,54 +39,26 @@ export function Members({ teamId }: { teamId: string }) {
   const { user } = useContext(AuthContext);
   const { members, getMembers } = useMembers();
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [isLoggedUserOwner, setIsLoggedUserOwner] = useState<boolean>(false);
 
-  const [loadingMemberId, setLoadingMemberId] = useState<string | null>(null);
+  const [loadingMemberId] = useState<string | null>(null);
 
-  const [isRemoving, setIsRemoving] = useState<boolean>(false);
-  console.log(isRemoving);
+  const [_, setIsRemoving] = useState<boolean>(false);
   const [removingMember, setRemovingMember] = useState<string | null>(null);
-
-  const handleMember = async (memberId: string, roleValue: string) => {
-    setLoadingMemberId(memberId);
-
-    let memberIndex = teamMembers.findIndex(
-      (item: TeamMember) => item.user.id === memberId
-    );
-
-    const updatedMember = { ...teamMembers[memberIndex], role: roleValue };
-
-    const updatedTeamMembers = [
-      ...teamMembers.slice(0, memberIndex),
-      updatedMember,
-      ...teamMembers.slice(memberIndex + 1),
-    ];
-
-    setTeamMembers(updatedTeamMembers);
-    const response = await updateMemberRole(
-      teamId,
-      updatedMember.user.id,
-      updatedMember.role
-    );
-
-    if (response.status === 201) {
-      alert("Função atualizada com sucesso!");
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setLoadingMemberId(null);
-  };
 
   const removeUser = async (memberId: string, memberName: string) => {
     setRemovingMember(memberId);
     setIsRemoving(true);
-    const areYouSure = confirm(
+
+    const areYouSure = await toastConfirmAlert(
       `Do you really want to remove ${memberName} from your team?`
     );
 
     if (areYouSure) {
-      await removeMember(teamId, memberId);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      navigate(0);
+      const response = await removeMember(teamId, memberId);
+      toast[response.success ? "success" : "error"](response.message, {
+        onClose: () => navigate(0),
+      });
     }
 
     setRemovingMember(null);
@@ -90,7 +70,18 @@ export function Members({ teamId }: { teamId: string }) {
   }, [members]);
 
   useEffect(() => {
-    if (teamId) getMembers(teamId);
+    const fetchMember = async (teamId: string) => {
+      if (teamId) {
+        const members = await getMembers(teamId);
+
+        const loggedUserRole = members.find(
+          (member: TeamMember) => member.user.id === user?.id
+        ).role;
+        setIsLoggedUserOwner(loggedUserRole === "OWNER" ? true : false);
+      }
+    };
+
+    fetchMember(teamId);
   }, [teamId]);
 
   return (
@@ -104,6 +95,11 @@ export function Members({ teamId }: { teamId: string }) {
         {/* Members */}
         <div className="relative w-full flex flex-col gap-8">
           {teamMembers.map((member: TeamMember, index: number) => {
+            const memberRole = {
+              role: member.role,
+              icon: roles.find((role) => role.value === member.role)?.icon,
+            };
+
             return (
               <div
                 key={index}
@@ -139,31 +135,30 @@ export function Members({ teamId }: { teamId: string }) {
                 </div>
 
                 <div className="flex items-center justify-end gap-2">
-                  {member.user.id !== (user && user.id) && (
-                    <button
-                      onClick={() =>
-                        removeUser(member.user.id, member.user.name)
-                      }
-                      className="h-9 w-9 rounded-md flex items-center justify-center duration-200 hover:bg-red-vibrant group"
-                    >
-                      {removingMember === member.user.id ? (
-                        <div className="flex w-full items-center justify-center">
-                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        </div>
-                      ) : (
-                        <Trash
-                          size={22}
-                          className="duration-200 group-hover:fill-white"
-                        />
-                      )}
-                    </button>
-                  )}
+                  {isLoggedUserOwner &&
+                    member.user.id !== (user && user.id) && (
+                      <button
+                        onClick={() =>
+                          removeUser(member.user.id, member.user.name)
+                        }
+                        className="h-9 w-9 rounded-md flex items-center justify-center duration-200 hover:bg-red-vibrant group"
+                      >
+                        {removingMember === member.user.id ? (
+                          <div className="flex w-full items-center justify-center">
+                            <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                          </div>
+                        ) : (
+                          <Trash
+                            size={22}
+                            className="duration-200 group-hover:fill-white"
+                          />
+                        )}
+                      </button>
+                    )}
                   <OptionsButton
-                    selectedValue={member.role}
-                    memberId={member.user.id}
+                    memberRole={memberRole}
                     loading={loadingMemberId === member.user.id}
                     disabled={false}
-                    handleRole={handleMember}
                     options={roles}
                   />
                 </div>
@@ -172,6 +167,8 @@ export function Members({ teamId }: { teamId: string }) {
           })}
         </div>
       </div>
+      <ToastContainer />
+      <ToastMessage />
     </div>
   );
 }
