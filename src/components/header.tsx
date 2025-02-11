@@ -332,7 +332,7 @@ const MobileNavigation = ({ urlParams }: { urlParams: URLSearchParams }) => {
       <div className="flex min-[900px]:hidden items-center justify-between">
         <div className="h-9 flex items-center justify-start gap-4 2xl:gap-16">
           <Link to="/" className="text-3xl text-nowrap text-title font-bold">
-            {"what's new-"}
+            {"what's new"}
           </Link>
           <nav className="hidden lg:block">
             <ul className="flex md:gap-4 2xl:gap-12">
