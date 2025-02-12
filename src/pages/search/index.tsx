@@ -6,7 +6,7 @@ import { buildQueryString, parseQueryString } from "../../utils/filters";
 import { FetchResponse, useFetchNews } from "../../hooks/useFetchNews";
 
 import { NewsList } from "./components/newsList";
-import { categories, countries } from "@src/constants";
+import { CATEGORIES, COUNTRIES } from "@src/constants";
 
 export type Filters = {
   category?: string;
@@ -147,7 +147,7 @@ export function Search() {
             label="Category"
             placeholder="Select a category"
             value={filters?.category || ""}
-            options={categories}
+            options={CATEGORIES}
             handleChange={handleFilterChange}
           />
 
@@ -157,7 +157,7 @@ export function Search() {
             label="Country"
             placeholder="Select a country"
             value={filters?.country || ""}
-            options={countries}
+            options={COUNTRIES}
             handleChange={handleFilterChange}
           />
 
