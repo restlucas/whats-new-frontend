@@ -1,4 +1,6 @@
-export const categories = [
+export const API_KEY = "a_super_secret_api_key";
+
+export const CATEGORIES = [
   { value: "general", name: "General" },
   { value: "business", name: "Business" },
   { value: "entertainment", name: "Entertainment" },
@@ -8,7 +10,7 @@ export const categories = [
   { value: "technology", name: "Technology" },
 ];
 
-export const countries = [
+export const COUNTRIES = [
   {
     value: "br",
     name: "Brazil",

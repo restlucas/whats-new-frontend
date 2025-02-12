@@ -11,7 +11,7 @@ import {
 } from "@phosphor-icons/react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
-import { categories } from "@src/constants";
+import { CATEGORIES } from "@src/constants";
 import ThemeToggle from "./themeToggle";
 import { AuthContext, UserProps } from "@src/contexts/AuthContext";
 
@@ -250,7 +250,7 @@ const DesktopNavigation = ({ urlParams }: { urlParams: URLSearchParams }) => {
         </Link>
         <nav>
           <ul className="flex gap-2 2xl:gap-12">
-            {categories.map((category, index) => {
+            {CATEGORIES.map((category, index) => {
               const params = new URLSearchParams(urlParams.toString());
               params.set("category", category.value);
               const categoryUrl = `/search?${params.toString()}`;
@@ -336,7 +336,7 @@ const MobileNavigation = ({ urlParams }: { urlParams: URLSearchParams }) => {
           </Link>
           <nav className="hidden lg:block">
             <ul className="flex md:gap-4 2xl:gap-12">
-              {categories.map((category, index) => {
+              {CATEGORIES.map((category, index) => {
                 const params = new URLSearchParams(urlParams.toString());
                 params.set("category", category.value);
                 const categoryUrl = `/search?${params.toString()}`;
@@ -394,7 +394,7 @@ const MobileNavigation = ({ urlParams }: { urlParams: URLSearchParams }) => {
                 Categories
               </h3>
               <ul className="flex flex-col items-start justify-center gap-2">
-                {categories.map((category, index) => {
+                {CATEGORIES.map((category, index) => {
                   const params = new URLSearchParams(urlParams.toString());
                   params.set("category", category.value);
                   const categoryUrl = `/search?${params.toString()}`;
