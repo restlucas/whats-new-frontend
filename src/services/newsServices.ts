@@ -56,7 +56,6 @@ export const fetchPaginateNews = async (options: QueryOptions) => {
   try {
     const params = {
       ...buildQueryParams(options),
-      api_key: "a_super_secret_api_key",
     };
 
     const response = await axiosInstance.get("/news", {
@@ -85,7 +84,6 @@ export const fetchArticle = async (
   try {
     const params = {
       slug: articleSlug,
-      api_key: "a_super_secret_api_key",
       userId,
     };
 
@@ -163,7 +161,6 @@ export const removeNews = async (newsId: string) => {
 export const incrementViews = async (slug: string): Promise<void> => {
   await axiosInstance.post("/news/article/views", {
     slug,
-    api_key: "a_super_secret_api_key",
   });
 };
 

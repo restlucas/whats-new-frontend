@@ -15,6 +15,8 @@ axiosInstance.interceptors.request.use(
       config.headers["Authorization"] = `Bearer ${token}`;
     }
 
+    config.headers["api_key"] = "a_super_secret_api_key";
+
     return config;
   },
   (error) => Promise.reject(error)
