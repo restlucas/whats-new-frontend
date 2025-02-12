@@ -26,9 +26,7 @@ export function Card({
         <div
           className="w-full h-[200px] flex items-center justify-center rounded-xl overflow-hidden relative bg-cover bg-center bg-no-repeat shadow-xl border-[1px] border-slate-200 dark:border-slate-700"
           style={{
-            backgroundImage: image
-              ? `url(${image})`
-              : `url(./assets/photo.jpg)`,
+            backgroundImage: `url(/assets/${image})`,
           }}
         >
           {category && (

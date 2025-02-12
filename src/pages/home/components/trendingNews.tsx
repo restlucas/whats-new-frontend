@@ -62,9 +62,7 @@ export function TrendingNews() {
                 <div
                   className="h-[356px] w-full rounded-md overflow-hidden flex items-center justify-center relative group shadow-xl bg-cover bg-center"
                   style={{
-                    backgroundImage: article.image
-                      ? `url(${article.image})`
-                      : `url(./assets/photo.jpg)`,
+                    backgroundImage: `url(/assets/${article.image})`,
                   }}
                 />
               </Link>

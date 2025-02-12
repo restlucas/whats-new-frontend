@@ -23,7 +23,7 @@ export function HorizontalCard({
         <div
           className={`w-full sm:w-[188px] h-[188px] overflow-hidden flex items-center justify-center rounded-md bg-cover bg-center bg-no-repeat`}
           style={{
-            backgroundImage: image ? `url(${image})` : `url(./assets/tech.jpg)`,
+            backgroundImage: `url(/assets/${image})`,
           }}
         />
       </Link>

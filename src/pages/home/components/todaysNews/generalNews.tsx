@@ -80,9 +80,7 @@ export function GeneralNews() {
                 <div
                   className="overflow-hidden w-full lg:w-[500px] h-[300px] rounded-xl flex items-center justify-center bg-cover bg-center bg-no-repeat shadow-md"
                   style={{
-                    backgroundImage: mainArticle.image
-                      ? `url(${mainArticle.image})`
-                      : `url(./assets/tech.jpg)`,
+                    backgroundImage: `url(/assets/${mainArticle.image}`,
                   }}
                 />
               </Link>

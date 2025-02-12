@@ -164,7 +164,7 @@ export function Article() {
 
               <div className="overflow-hidden w-full h-[300px] rounded-xl flex items-center justify-center shadow-lg">
                 <img
-                  src={article.image}
+                  src={`/assets/cover@7.jpg`}
                   className="w-full h-full object-cover object-center"
                   loading="lazy"
                   alt="Image description"
