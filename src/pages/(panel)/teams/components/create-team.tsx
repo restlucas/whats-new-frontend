@@ -37,6 +37,8 @@ export function CreateTeam() {
             id="teamName"
             name="teamName"
             placeholder="Enter a team name..."
+            minLength={4}
+            required
             handleChange={(e) => setTeamName(e.target.value)}
           />
         </div>
