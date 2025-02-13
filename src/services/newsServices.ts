@@ -132,7 +132,7 @@ export const handleNews = async (
   const { teamId, userId, ...restData } = data;
   try {
     const response = await axiosInstance[action](
-      `${action === "post" ? "create" : "update"}/news/${teamId}/${userId}`,
+      `news/${action === "post" ? "create" : "update"}/${teamId}/${userId}`,
       restData,
       {
         headers: {

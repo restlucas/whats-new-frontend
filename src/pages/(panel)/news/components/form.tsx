@@ -101,9 +101,9 @@ export function NewsForm({ action, slug, filledForm }: FormProps) {
         });
       } else {
         toast.error(response.message);
-        setSubmitting(false);
       }
     }
+    setSubmitting(false);
   };
 
   const handleChange = (

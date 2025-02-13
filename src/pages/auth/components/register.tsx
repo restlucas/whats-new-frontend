@@ -71,8 +71,8 @@ export function Register({ registerMode, handleAuth }: RegisterProps) {
         window.history.replaceState({}, "", url.toString());
         handleAuth("login");
       }
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (

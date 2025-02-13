@@ -58,9 +58,8 @@ export function Login({ entranceMode, handleAuth }: LoginProps) {
           navigate("/panel");
         }
       }
-
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (

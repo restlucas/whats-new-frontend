@@ -48,9 +48,9 @@ export function EditHistory() {
         <table className="w-full border-collapse rounded-md">
           <thead className="bg-tertiary/10 dark:bg-tertiary/60">
             <tr className="text-sm font-bold w-full overflow-x-scroll text-left rtl:text-right">
-              <th className="p-3 w-[10%]">Created At</th>
-              <th className="p-3 w-[65%]">Article link</th>
-              <th className="p-3 w-[25%]">Modified by</th>
+              <th className="p-3 w-[10%] text-nowrap">Created At</th>
+              <th className="p-3 w-[65%] text-nowrap">Article link</th>
+              <th className="p-3 w-[25%] text-nowrap">Modified by</th>
             </tr>
           </thead>
           <tbody>
@@ -73,7 +73,7 @@ export function EditHistory() {
                   </tr>
                 );
               })
-            ) : editHistory ? (
+            ) : editHistory && editHistory.length > 0 ? (
               editHistory.map((article, index) => {
                 return (
                   <tr
@@ -119,7 +119,14 @@ export function EditHistory() {
                 );
               })
             ) : (
-              <p>not to show</p>
+              <tr>
+                <td
+                  className="w-full text-center py-6 font-semibold"
+                  colSpan={5}
+                >
+                  No edit history
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
