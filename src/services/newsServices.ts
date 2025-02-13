@@ -84,14 +84,12 @@ export const fetchArticle = async (
   userId?: string
 ): Promise<Article> => {
   try {
-    const params = {
-      slug: articleSlug,
-      api_key: API_KEY,
-      userId,
-    };
-
     const response = (await axiosInstance.get("/news/article", {
-      params,
+      params: {
+        slug: articleSlug,
+        api_key: API_KEY,
+        userId,
+      },
     })) as { data: { data: Article } };
 
     const article = response.data;
@@ -134,7 +132,7 @@ export const handleNews = async (
   const { teamId, userId, ...restData } = data;
   try {
     const response = await axiosInstance[action](
-      `/news/${teamId}/${userId}`,
+      `${action === "post" ? "create" : "update"}/news/${teamId}/${userId}`,
       restData,
       {
         headers: {
