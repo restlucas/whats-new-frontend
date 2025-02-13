@@ -51,6 +51,7 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
       teamInvitations: false,
     },
   });
+  const [submitting, isSubmitting] = useState<boolean>(false);
 
   const updateState = (updates: Partial<typeof state>) => {
     setState((prevState) => ({ ...prevState, ...updates }));
@@ -58,6 +59,7 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
 
   const fetchMemberInvitations = async () => {
     updateState({ loading: { ...state.loading, memberInvitations: true } });
+
     try {
       const teamId = selectedTeam?.id || "123";
       const response = await getMemberInvitations(teamId);
@@ -130,7 +132,8 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
 
   const handleSubmitInvite = async (e: React.FormEvent) => {
     e.preventDefault();
-    updateState({ loading: { ...state.loading, memberInvitations: true } });
+    isSubmitting(true);
+
     try {
       if (selectedTeam?.id && state.userEmail) {
         const response = await sendInvitation(selectedTeam.id, state.userEmail);
@@ -142,7 +145,7 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
     } catch (error) {
       alert(`Error on create invitation: ${error}`);
     } finally {
-      updateState({ loading: { ...state.loading, memberInvitations: false } });
+      isSubmitting(false);
     }
   };
 
@@ -150,8 +153,11 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
     if (selectedTeam && user) {
       fetchMemberInvitations();
     }
-    fetchTeamInvitations();
   }, [selectedTeam]);
+
+  useEffect(() => {
+    fetchTeamInvitations();
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">
@@ -185,9 +191,10 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
             </div>
             <button
               type="submit"
-              className="h-9 w-[170px] bg-red-vibrant rounded-md text-nowrap text-xs md:text-sm text-center text-white font-semibold duration-100 hover:bg-red-hover"
+              className={`h-9 w-[170px] bg-red-vibrant rounded-md text-nowrap text-xs md:text-sm text-center text-white font-semibold duration-100 hover:bg-red-hover disabled:cursor-not-allowed disabled:pointer-events-none`}
+              disabled={submitting}
             >
-              {state.loading.memberInvitations ? (
+              {submitting ? (
                 <div className="flex w-full items-center justify-center">
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                 </div>
@@ -282,6 +289,7 @@ export function Invites({ selectedTeam }: { selectedTeam: SelectedTeamProps }) {
           </div>
         </div>
       </div>
+
       <div className="py-6 border rounded-xl border-tertiary/20 dark:border-tertiary flex flex-col gap-2 space-y-9">
         {/* My team invitations */}
         <div className="px-6">

@@ -8,7 +8,8 @@ export function AuthButton({
   return (
     <button
       type="submit"
-      className="w-full h-11 rounded-md bg-red-vibrant text-white font-bold duration-200 hover:bg-red-hover shadow-lg"
+      className={`w-full h-11 rounded-md bg-red-vibrant text-white font-bold duration-200 hover:bg-red-hover shadow-lg disabled:cursor-not-allowed disabled:pointer-events-none`}
+      disabled={loading}
     >
       {loading ? (
         <div className="flex w-full items-center justify-center">

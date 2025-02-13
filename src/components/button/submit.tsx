@@ -8,7 +8,8 @@ export function SubmitButton({
   return (
     <button
       type="submit"
-      className="h-9 w-[170px] bg-red-vibrant rounded-md text-nowrap text-xs md:text-sm text-center text-white font-semibold duration-100 hover:bg-red-hover"
+      className={`h-9 w-[170px] bg-red-vibrant rounded-md text-nowrap text-xs md:text-sm text-center text-white font-semibold duration-100 hover:bg-red-hover disabled:pointer-events-none disabled:cursor-not-allowed`}
+      disabled={loading}
     >
       {loading ? (
         <div className="flex w-full items-center justify-center">
