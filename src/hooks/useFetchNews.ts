@@ -126,7 +126,7 @@ export const useFetchBasicNews = (
   const { status, data, error, isFetching, refetch } = useQuery({
     queryKey: ["newsByTeam", queryOptions],
     queryFn: async () => {
-      return await fetchNewsByTeam(queryOptions);
+      if (teamId !== "") return await fetchNewsByTeam(queryOptions);
     },
     enabled: teamId !== "" && shouldFetch,
     placeholderData: keepPreviousData,

@@ -547,7 +547,7 @@ export function List() {
               handleSize={handlePageSizeChange}
             />
 
-            <span className="text-center w-full sm:w-auto">
+            <span className="mt-6 sm:mt-0 text-center w-full sm:w-auto">
               Page {options.currentPage} of {options.totalPages}
             </span>
 

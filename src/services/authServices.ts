@@ -144,5 +144,5 @@ export const validateToken = async (token: string) => {
 export const handleRefresh = async () => {
   const response = await axiosInstance.post("/auth/refresh");
 
-  return response.data.data;
+  return response.data;
 };

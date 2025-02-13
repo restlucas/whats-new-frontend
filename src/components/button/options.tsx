@@ -73,7 +73,7 @@ export function OptionsButton({
         ) : (
           <>
             <div className="flex items-center justify-center sm:hidden">
-              <ArrowsCounterClockwise size={22} weight="bold" />
+              {memberRole.icon}
             </div>
             <div className="hidden sm:flex items-center justify-center gap-3">
               <span className="font-semibold">

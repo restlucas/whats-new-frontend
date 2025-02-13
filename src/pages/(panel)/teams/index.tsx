@@ -201,14 +201,14 @@ export function Teams() {
         <div className="flex flex-col gap-4">
           {/* Teams */}
           <div className="flex">
-            <div className="flex items-center justify-start gap-2">
+            <div className="flex items-center justify-start gap-2 flex-wrap">
               {teams &&
                 teams.map((team: Team) => {
                   return (
                     <button
                       key={team.id}
                       type="button"
-                      className={`font-bold py-1 px-4 rounded-lg hover:bg-tertiary/20 dark:hover:bg-tertiary hover:text-tertiary dark:hover:text-white ${selectedTeam && selectedTeam.name === team.name ? " text-tertiary dark:text-white bg-tertiary/20 dark:bg-tertiary" : "text-black/30 dark:text-light/30"}`}
+                      className={`text-nowrap font-bold py-1 px-4 rounded-lg hover:bg-tertiary/20 dark:hover:bg-tertiary hover:text-tertiary dark:hover:text-white ${selectedTeam && selectedTeam.name === team.name ? " text-tertiary dark:text-white bg-tertiary/20 dark:bg-tertiary" : "text-black/30 dark:text-light/30"}`}
                       onClick={() => handleNavigation(team)}
                     >
                       {team.name}

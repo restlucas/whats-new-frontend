@@ -75,20 +75,21 @@ export function AuthContextProvider({
   const checkAuth = async () => {
     const accessToken = getLocalStorage("@whats-new:accessToken");
 
-    if (accessToken) {
-      setIsAuthenticated(true);
-      setUser(getLocalStorage("@whats-new:user"));
-      setLoading(false);
+    if (!accessToken) {
       return;
     }
 
+    setIsAuthenticated(true);
+    setUser(getLocalStorage("@whats-new:user"));
+    setLoading(false);
+
     try {
       const response = await handleRefresh();
-      if (response.isValid) {
+      if (response.success) {
         setIsAuthenticated(true);
-        setLocalStorage("@whats-new:user", response.user);
-        setUser(response.user);
-        setLocalStorage("@whats-new:accessToken", response.accessToken);
+        setLocalStorage("@whats-new:user", response.data.user);
+        setUser(response.data.user);
+        setLocalStorage("@whats-new:accessToken", response.data.accessToken);
       } else {
         setIsAuthenticated(false);
         setUser(null);

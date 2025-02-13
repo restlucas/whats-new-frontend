@@ -15,3 +15,18 @@ body {
 .ProseMirror:focus {
   outline: none;
 }
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background-color: #303945;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar {
+  width: 1px;
+  height: 6px;
+}
