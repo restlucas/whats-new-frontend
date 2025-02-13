@@ -1,4 +1,3 @@
-import { ArrowsCounterClockwise } from "@phosphor-icons/react";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
 interface OptionsButtonProps {
