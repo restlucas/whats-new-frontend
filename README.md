@@ -55,4 +55,4 @@ O frontend estará disponível em http://localhost:5173 (ou porta configurada).
 
 ##
 
-💡 Feedbacks são bem-vindos! Se tiver sugestões, deixe um comentário ou abra uma issue. 🚀
+💡 **Feedbacks são bem-vindos!** Se tiver sugestões, deixe um comentário ou abra uma issue. 🚀
