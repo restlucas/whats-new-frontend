@@ -152,14 +152,14 @@ export function Search() {
           />
 
           {/* Country select */}
-          <Select
+          {/* <Select
             identifier="country"
             label="Country"
             placeholder="Select a country"
             value={filters?.country || ""}
             options={COUNTRIES}
             handleChange={handleFilterChange}
-          />
+          /> */}
 
           {/* Order by */}
           <Select
