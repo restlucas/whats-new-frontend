@@ -30,16 +30,6 @@ cd whatsnew-frontend
 npm install  # ou yarn install
 ```
 
-## ▶️ Execução
-
-Para iniciar o projeto em ambiente de desenvolvimento, execute:
-
-```
-npm run dev  # ou yarn dev
-```
-
-O frontend estará disponível em http://localhost:5173 (ou porta configurada).
-
 ## 🛠 Configuração do Ambiente
 
 Crie um arquivo .env na raiz do projeto e adicione as variáveis necessárias seguindo de exemplo o arquivo `.env.example`:
@@ -52,6 +42,16 @@ VITE_WHATSNEW_CLIENT_URL=http://localhost:5173/
 Importante: caso não queira configurar o back-end utilize o valor de `VITE_WHATSNEW_API_URL` como sendo `https://whatsnew-backend.up.railway.app/v1/api`
 
 Link do repositório back-end: https://github.com/restlucas/whatsnew-backend
+
+## ▶️ Execução
+
+Para iniciar o projeto em ambiente de desenvolvimento, execute:
+
+```
+npm run dev  # ou yarn dev
+```
+
+O frontend estará disponível em http://localhost:5173 (ou porta configurada).
 
 ##
 
