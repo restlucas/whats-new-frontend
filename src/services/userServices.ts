@@ -106,11 +106,11 @@ export const toggleCommentLike = async (
 };
 
 export const validateToken = async (token: string) => {
-  return await axiosInstance.post("/users/validate-token", { token });
+  return await axiosInstance.post("/auth/validate-token", { token });
 };
 
 export const resetPassword = async (token: string, newPassword: string) => {
-  const response = await axiosInstance.post("/users/reset-password", {
+  const response = await axiosInstance.post("/auth/reset-password", {
     token,
     newPassword,
   });

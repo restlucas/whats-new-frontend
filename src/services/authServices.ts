@@ -116,14 +116,14 @@ export const validateInvitation = async (token: string) => {
 };
 
 export const requestResetPassword = async (userEmail: string) => {
-  return await axiosInstance.post("/users/request-reset-password", {
+  return await axiosInstance.post("/auth/request-reset-password", {
     userEmail,
   });
 };
 
 export const validateToken = async (token: string) => {
   try {
-    const response = await axiosInstance.get("/users/validate-token", {
+    const response = await axiosInstance.get("/auth/validate-token", {
       params: { token },
     });
 

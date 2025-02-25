@@ -34,7 +34,7 @@ export function ResetPassword() {
 
   const checkTokenValidation = async (token: string) => {
     const response = await validateToken(token);
-    setIsTokenValid(response.isValid);
+    setIsTokenValid(response.success);
     setLoading(false);
   };
 
