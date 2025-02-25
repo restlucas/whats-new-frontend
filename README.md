@@ -42,7 +42,7 @@ O frontend estará disponível em http://localhost:5173 (ou porta configurada).
 
 ## 🛠 Configuração do Ambiente
 
-Crie um arquivo .env na raiz do projeto e adicione as variáveis necessárias seguindo de exemplo o arquivo .env.example:
+Crie um arquivo .env na raiz do projeto e adicione as variáveis necessárias seguindo de exemplo o arquivo `.env.example`:
 
 ```
 VITE_WHATSNEW_API_URL=your_api_url
