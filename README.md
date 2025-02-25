@@ -51,6 +51,8 @@ VITE_WHATSNEW_CLIENT_URL=http://localhost:5173/
 
 Importante: caso não queira configurar o back-end utilize o valor de `VITE_WHATSNEW_API_URL` como sendo `https://whatsnew-backend.up.railway.app/v1/api`
 
+Link do repositório back-end: https://github.com/restlucas/whatsnew-backend
+
 ##
 
 💡 Feedbacks são bem-vindos! Se tiver sugestões, deixe um comentário ou abra uma issue. 🚀
