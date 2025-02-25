@@ -6,7 +6,7 @@ import { buildQueryString, parseQueryString } from "../../utils/filters";
 import { FetchResponse, useFetchNews } from "../../hooks/useFetchNews";
 
 import { NewsList } from "./components/newsList";
-import { CATEGORIES, COUNTRIES } from "@src/constants";
+import { CATEGORIES } from "@src/constants";
 
 export type Filters = {
   category?: string;
