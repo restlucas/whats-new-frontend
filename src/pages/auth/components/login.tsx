@@ -47,7 +47,7 @@ export function Login({ entranceMode, handleAuth }: LoginProps) {
       if (response.status !== 200) {
         setMessage({
           code: response.status,
-          title: response.message as string,
+          title: "Invalid credentials",
         });
       } else {
         setMessage({ code: 201, title: "Login successful!" });
